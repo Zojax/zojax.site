@@ -1,0 +1,83 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   i18n_domain="zojax.site">
+
+  <permission
+     id="zojax.AddSite"
+     title="Add site" />
+
+  <permission
+     id="zojax.AccessSite"
+     title="Access site" />
+
+  <!-- content classe -->
+  <zojax:content
+     title="Site"
+     name="site"
+     schema=".interfaces.ISite"
+     class=".site.Site"
+     description="A content site."
+     ctclass=".ct.SiteContentType"
+     type="zojax.content.space.interfaces.IRootSpaceType
+     zojax.content.space.interfaces.IContentSpaceType"
+     contains="zojax.content.space.interfaces.IContentSpaceType
+               zojax.content.space.interfaces.ISpaceContentType"
+     permission="zojax.AddSite" />
+
+  <class class=".site.Site">
+    <implements interface="zojax.activity.interfaces.IActivityAware" />
+    <implements interface="zojax.catalog.interfaces.ISearchContext" />
+    <implements interface="zojax.catalog.interfaces.ICatalogAwareSite" />
+    <implements interface="zojax.content.space.interfaces.IRootSpace" />
+    <implements interface="zojax.content.space.interfaces.IContentSpaceLayout" />
+    <implements interface="zojax.content.type.interfaces.IShareableContent" />
+    <implements interface="zojax.content.type.interfaces.ISearchableContent" />
+    <implements interface="zojax.skintool.interfaces.ISkinable" />
+
+    <allow attributes="getSiteManager" />
+
+    <require
+       permission="zope.View"
+       interface="zojax.content.space.interfaces.IContentSpace
+      zojax.content.space.interfaces.IContentSpaceLayout
+      zojax.content.space.interfaces.IWorkspacesManagement" />
+
+    <require
+       permission="zojax.AccessSite"
+       interface="zope.app.container.interfaces.IReadContainer" />
+
+    <require
+       permission="zojax.ModifyContent"
+       set_schema="zojax.content.space.interfaces.IContentSpace
+       zojax.content.space.interfaces.IContentSpaceLayout
+       zojax.content.space.interfaces.IWorkspacesManagement"
+       interface="zope.app.container.interfaces.IWriteContainer" />
+  </class>
+
+  <subscriber handler=".site.siteAddedHandler" />
+
+  <!-- base site config -->
+  <adapter
+     name="basic"
+     factory=".config.BasicSiteConfiguration" />
+
+  <adapter
+     name="skin"
+     factory=".config.SkinConfiguration" />
+
+  <!-- content type -->
+  <class class=".ct.SiteContentType">
+    <require
+       permission="zope.Public"
+       interface="zojax.content.type.interfaces.IContentType
+      zope.location.interfaces.ILocation" />
+  </class>
+
+  <!-- copy/move -->
+  <adapter factory=".site.SiteCopier" />
+
+  <!-- browser views -->
+  <include package=".browser" />
+
+</configure>
