@@ -1,0 +1,112 @@
+=============
+Browser tests
+=============
+
+    >>> from zope import component, interface, event
+    >>> from zope.interface import verify
+    >>> from zope.testbrowser.testing import Browser
+    >>> from zope.app.component.hooks import setSite
+    >>> from zope.app.component.interfaces import ISite
+    >>> from zope.app.security.interfaces import IAuthentication
+    >>> from zojax.site import interfaces
+    >>> from zojax.site.site import Site
+
+    >>> root = getRootFolder()
+    >>> setSite(root)
+
+    >>> admin = Browser()
+    >>> admin.addHeader("Authorization", "Basic mgr:mgrpw")
+    >>> admin.handleErrors = False
+
+Verify contract implementation
+
+    >>> verify.verifyClass(interfaces.ISite, Site)
+    True
+
+Create
+
+    >>> admin.open('http://localhost/space/context.html')
+
+    >>> admin.getLink('Site').click()
+    >>> admin.getControl('Title').value = u'Test site'
+    >>> admin.getControl('Content short name').value = u'test_site'
+    >>> admin.getControl('Add').click()
+    >>> admin.url
+    'http://localhost/space/test_site/'
+
+    >>> ISite.providedBy(root['space']['test_site'])
+    True
+
+Rename
+
+    >>> admin.open('http://localhost/space/context.html')
+    >>> admin.getControl(name="ids:list").value = ['test_site']
+    >>> admin.getControl('Rename').click()
+
+    >>> admin.getControl(name="newIds:list").value = 'test'
+    >>> admin.getControl("Apply").click()
+
+    >>> ISite.providedBy(root['space']['test'])
+    True
+
+
+Site Access
+-------------
+
+Open
+
+    >>> admin.open('http://localhost/space/test/context.html/security/')
+    >>> print admin.contents
+    <!DOCTYPE html PUBLIC
+    ...
+    <div class="z-listing-icon">
+        <input type="radio" name="site.access" value="open" checked="True" />
+    </div>
+    <div class="z-listing-details">
+        <span>Open</span>
+        <div>Anyone can view site data.</div>
+    </div>
+    ...
+    </html>
+
+    >>> anonymous = Browser()
+    >>> anonymous.handleErrors = False
+    >>> anonymous.open('http://localhost/space/test/')
+    >>> print anonymous.contents
+    <!DOCTYPE html PUBLIC...
+    ...
+    ...<div class="z-portlet portlet-recent-content ">
+      <h2 class="z-portlet-header">
+        <a class="z-portlet-feed" title="RSS feed" href="http://localhost/space/test/@@feeds/contents">
+          <img src="http://localhost/space/test/@@/rss-icon.png" />
+        </a>
+        Recent content
+      </h2>
+      <div class="z-portlet-body">
+        ...
+      </div>
+    </div>
+    ...
+    </html>
+
+
+Private
+
+    >>> admin.getControl(name="site.access").value = ["private"]
+    >>> admin.getControl(name="site.access.save").click()
+
+    >>> anonymous.open('http://localhost/space/test/')
+    Traceback (most recent call last):
+    ...
+    Unauthorized: (..., 'browserDefault', 'zojax.AccessSite')
+
+Remove
+
+    >>> admin.open('http://localhost/space/context.html')
+    >>> admin.getControl(name="ids:list").value = ['test']
+    >>> admin.getControl('Delete').click()
+
+    >>> 'test' not in root['space']
+    True
+
+    >>> setSite(None)

@@ -1,0 +1,31 @@
+<h2>Site Access Settings</h2>
+<div class="z-form-fieldset">
+  <ul class="z-listing">
+    <li>
+      <div class="z-listing-icon">
+  <input type="radio" name="site.access" value="open"
+         tal:attributes="checked view/everyoneAllowed" />
+      </div>
+      <div class="z-listing-details">
+  <span>Open</span>
+  <div>Anyone can view site data.</div>
+      </div>
+    </li>
+
+    <li>
+      <div class="z-listing-icon">
+  <input type="radio" name="site.access" value="private"
+         tal:attributes="checked view/authgroupAllowed" />
+      </div>
+      <div class="z-listing-details">
+  <span>Private</span>
+  <div>Only authenticated members can view site data.</div>
+      </div>
+    </li>
+  </ul>
+  <div class="visualClear"></div>
+</div>
+<div class="z-form-controls">
+  <input class="z-form-savebutton"
+   type="submit" name="site.access.save" value="Save" />
+</div>

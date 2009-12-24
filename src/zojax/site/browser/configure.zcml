@@ -1,0 +1,42 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="zojax.site">
+
+  <!-- portal access -->
+  <zojax:pagelet
+     name="access"
+     type="form.subform"
+     for="..interfaces.ISite
+	  zojax.content.forms.interfaces.ISecurityStep"
+     template="access.pt"
+     class=".access.SiteAccessSettings"
+     provides="zojax.layoutform.interfaces.IPageletFormView"
+     permission="zojax.ModifyContent"
+     weight="0" />
+
+  <!-- browser views -->
+  <browser:page
+     name="index.html"
+     for="..ct.SiteContentType"
+     class=".view.SiteAddForm"
+     permission="zope.View" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="..interfaces.ISite"
+     file="site.gif" />
+
+  <browser:icon
+     name="zmi_icon"
+     for="zojax.content.site"
+     file="site.gif" />
+
+  <browser:page
+     name="index.html"
+     for="..interfaces.ISite"
+     class="zojax.content.space.browser.space.ContentSpace"
+     permission="zojax.AccessSite" />
+
+</configure>
