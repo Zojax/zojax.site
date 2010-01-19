@@ -1,40 +1,8 @@
-=======
-CHANGES
-=======
-
-0.2.4 (Unreleased)
+1.0.2 (Unreleased)
 ------------------
 
 
-0.2.3 (2009-09-16)
+1.0.1 (2010-01-19)
 ------------------
 
-- Removed IEmptyNamesNotAllowed from site implements
-
-
-0.2.2 (2009-08-21)
-------------------
-
-- Added workspaces management support
-
-
-0.2.1 (2009-08-14)
-------------------
-
-- Added 'zojax.AddSite' permission
-
-
-0.2.0 (2009-08-12)
-------------------
-
-- Install catalog to new site
-
-- Update test for chameleon enabled setup
-
-
-0.1.0 (2009-06-25)
-------------------
-
-- Access site setting copied from portal
-
-- Initial release.
+- zojax initial release
