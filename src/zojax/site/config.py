@@ -92,6 +92,6 @@ class SkinConfiguration(ConfigurationPluginBase):
                 'zojax.AccessSite', authenticated.id)
 
         # install catalog
-        sm.getUtility(IConfiglet, 'system.catalog').install()
+        #sm.getUtility(IConfiglet, 'system.catalog').install()
 
         setSite(site)
