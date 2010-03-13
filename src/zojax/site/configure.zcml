@@ -20,7 +20,8 @@
      description="A content site."
      ctclass=".ct.SiteContentType"
      type="zojax.content.space.interfaces.IRootSpaceType
-     zojax.content.space.interfaces.IContentSpaceType"
+           zojax.content.space.interfaces.IContentSpaceType
+           zojax.content.type.interfaces.IPortalType"
      contains="zojax.content.space.interfaces.IContentSpaceType
                zojax.content.space.interfaces.ISpaceContentType"
      permission="zojax.AddSite" />
