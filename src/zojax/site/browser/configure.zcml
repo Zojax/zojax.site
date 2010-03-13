@@ -16,12 +16,7 @@
      permission="zojax.ModifyContent"
      weight="0" />
 
-  <!-- browser views -->
-  <browser:page
-     name="index.html"
-     for="..ct.SiteContentType"
-     class=".view.SiteAddForm"
-     permission="zope.View" />
+
 
   <browser:icon
      name="zmi_icon"
