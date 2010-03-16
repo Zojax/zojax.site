@@ -34,6 +34,7 @@
     <implements interface="zojax.content.space.interfaces.IContentSpaceLayout" />
     <implements interface="zojax.content.type.interfaces.IShareableContent" />
     <implements interface="zojax.content.type.interfaces.ISearchableContent" />
+    <implements interface="zojax.content.urlmapper.interfaces.IURLMappable" />
     <implements interface="zojax.skintool.interfaces.ISkinable" />
 
     <allow attributes="getSiteManager" />
