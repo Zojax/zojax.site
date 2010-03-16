@@ -62,6 +62,7 @@ setup(name='zojax.site',
                           'zojax.content.type',
                           'zojax.content.forms',
                           'zojax.content.space',
+                          'zojax.content.urlmapper'
                           ],
       extras_require = dict(test=['zope.app.testing',
                                   'zope.app.zcmlfiles',
