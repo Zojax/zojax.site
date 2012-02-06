@@ -27,6 +27,12 @@ from zojax.content.space.content import ContentSpace
 from interfaces import ISite
 from config import reconfigureSite
 
+from zojax.content.type.constraints import checkObject
+from zope.lifecycleevent import ObjectCopiedEvent
+from zope.app.container.interfaces import INameChooser
+from zc.copy import copy
+from zope.interface import Invalid
+
 
 class Site(ContentSpace):
     interface.implements(ISite)
@@ -41,8 +47,8 @@ class Site(ContentSpace):
         return self._sm
 
     def setSiteManager(self, sm):
-        if interfaces.ISite.providedBy(self):
-            raise TypeError("Already a site")
+        #if interfaces.ISite.providedBy(self):
+        #    raise TypeError("Already a site")
 
         if IComponentLookup.providedBy(sm):
             self._sm = sm
@@ -72,10 +78,35 @@ class SiteCopier(object):
         self.context = object
 
     def copyTo(self, target, new_name=None):
-        raise RuntimeError('Object is not copyable')
+        obj = self.context
+        container = obj.__parent__
+
+        orig_name = obj.__name__
+        if new_name is None:
+            new_name = orig_name
+
+        checkObject(target, new_name, obj)
+
+        chooser = INameChooser(target)
+        new_name = chooser.chooseName(new_name, obj)
+
+        new = copy(obj)
+        event.notify(ObjectCopiedEvent(new, obj))
+
+        target[new_name] = new
+        new._sm = copy(obj._sm)
+        return new_name
 
     def copyable(self):
-        return False
+        return True
 
     def copyableTo(self, target, name=None):
-        return False
+        if name is None:
+            name = self.context.__name__
+
+        try:
+            checkObject(target, name, self.context)
+        except Invalid:
+            return False
+
+        return True
