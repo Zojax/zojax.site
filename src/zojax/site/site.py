@@ -92,9 +92,13 @@ class SiteCopier(object):
 
         new = copy(obj)
         event.notify(ObjectCopiedEvent(new, obj))
-
         target[new_name] = new
+
+        #copy site manager
         new._sm = copy(obj._sm)
+        new._sm.__parent__ = new
+        new._sm.__name__ = obj._sm.__name__
+
         return new_name
 
     def copyable(self):
