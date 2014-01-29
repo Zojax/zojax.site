@@ -73,22 +73,14 @@ Open
     >>> anonymous.handleErrors = False
     >>> anonymous.open('http://localhost/space/test/')
     >>> print anonymous.contents
-    <!DOCTYPE html PUBLIC...
+    <!DOCTYPE html PUBLIC ...
+    <html>
     ...
-    ...<div class="z-portlet portlet-recent-content ">
-      <h2 class="z-portlet-header">
-        <a class="z-portlet-feed" title="RSS feed" href="http://localhost/space/test/@@feeds/contents">
-          <img src="http://localhost/space/test/@@/rss-icon.png" />
-        </a>
-        Recent content
-      </h2>
-      <div class="z-portlet-body">
-        ...
-      </div>
-    </div>
+        <div class="z-portlet-item odd">
+          No content has been created yet.
+        </div>
     ...
     </html>
-
 
 Private
 
